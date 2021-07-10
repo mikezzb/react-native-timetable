@@ -1,0 +1,22 @@
+{
+  "name": "react-native-timetable-example",
+  "displayName": "Timetable Example",
+  "expo": {
+    "name": "react-native-timetable-example",
+    "slug": "react-native-timetable-example",
+    "description": "Example app for react-native-timetable",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
