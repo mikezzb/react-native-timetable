@@ -23,4 +23,18 @@ interface Events {
   instructors: string[];
 }
 
-export { EventsGroup, Events, Event };
+interface Configs {
+  startHour: number;
+  endHour: number;
+  numOfHours: number;
+  cellWidth: number;
+  cellHeight: number;
+  numOfDays: number;
+  timeTicksWidth: number;
+}
+
+type PropsWithConfigs<T> = T & {
+  configs: Configs;
+};
+
+export { EventsGroup, Events, Event, Configs, PropsWithConfigs };

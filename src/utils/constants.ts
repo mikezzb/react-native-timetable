@@ -1,13 +1,21 @@
 import getCellWidth from './getCellWidth';
 
+export const TIME_TICKS_WIDTH = 52;
+export const NUM_OF_DAYS_IN_PAGE = 5;
+
+const cellWidth = getCellWidth({
+  ticksWidth: TIME_TICKS_WIDTH,
+  numOfCells: NUM_OF_DAYS_IN_PAGE,
+});
+
 export const TIMETABLE_CONSTANTS = Object.freeze({
-  START_HOUR: 8,
-  END_HOUR: 19,
-  NO_OF_HOURS: 12,
-  CELL_WIDTH: getCellWidth(),
-  CELL_HEIGHT: getCellWidth(),
-  NO_OF_DAYS: 7,
-  LEFT_BAR_WIDTH: 52,
+  startHour: 8,
+  endHour: 19,
+  numOfHours: 12,
+  cellWidth: cellWidth,
+  cellHeight: cellWidth,
+  numOfDays: 7,
+  timeTicksWidth: TIME_TICKS_WIDTH,
 });
 
 export const COLORS = {

@@ -1,17 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import type { PropsWithConfigs } from 'src/types';
 
-import { COLORS, TIMETABLE_CONSTANTS, WEEKDAYS } from '../utils/constants';
+import { COLORS, WEEKDAYS } from '../utils/constants';
 
-const { CELL_WIDTH, NO_OF_DAYS } = TIMETABLE_CONSTANTS;
-
-export default function WeekdayText() {
+export default function WeekdayText({ configs }: PropsWithConfigs<{}>) {
+  const { cellWidth, numOfDays } = configs;
   const currentDay = new Date();
   const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
+  const styles = getStyles({ cellWidth });
 
   return (
     <>
-      {Array.from({ length: NO_OF_DAYS }, (_, i) => 1 + i).map((day) => {
+      {Array.from({ length: numOfDays }, (_, i) => 1 + i).map((day) => {
         const differenceOfDate = day - currentWeekday;
         const thatDay = new Date();
         thatDay.setDate(new Date().getDate() + differenceOfDate);
@@ -32,18 +33,19 @@ export default function WeekdayText() {
   );
 }
 
-const styles = StyleSheet.create({
-  weekdayCell: {
-    width: CELL_WIDTH,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  weekdayTextHighlight: {
-    color: COLORS.accent,
-  },
-  weekdayText: {
-    fontSize: 11,
-    color: 'white',
-  },
-});
+const getStyles = ({ cellWidth }) =>
+  StyleSheet.create({
+    weekdayCell: {
+      width: cellWidth,
+      height: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    weekdayTextHighlight: {
+      color: COLORS.accent,
+    },
+    weekdayText: {
+      fontSize: 11,
+      color: 'white',
+    },
+  });

@@ -1,16 +1,14 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 import { Svg, Defs, Pattern, Rect, Path } from 'react-native-svg';
+
 import EventCard from './EventCard';
 import TimeIndicator from './TimeIndicator';
 import { COLORS, TIMETABLE_CONSTANTS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
-import type { EventsGroup } from '../types';
-
-const { CELL_WIDTH, NO_OF_DAYS, NO_OF_HOURS, LEFT_BAR_WIDTH } =
-  TIMETABLE_CONSTANTS;
+import type { Configs, EventsGroup } from '../types';
 
 type TimeTableProps = {
   events: EventsGroup[];
@@ -18,6 +16,7 @@ type TimeTableProps = {
   headerStyle?: ViewStyle;
   contentContainerStyle?: ViewStyle;
   eventColors?: string[];
+  configs?: Configs;
 };
 
 export default function TimeTable({
@@ -26,12 +25,20 @@ export default function TimeTable({
   headerStyle,
   contentContainerStyle,
   eventColors,
+  configs,
 }: TimeTableProps) {
   const weekdayScrollRef = useRef<null | ScrollView>(null);
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
 
-  const styles = getStyles();
+  configs = {
+    ...TIMETABLE_CONSTANTS,
+    ...configs,
+  };
+
+  const { cellWidth, numOfDays, numOfHours } = configs;
+
+  const styles = getStyles(configs);
 
   const onHorizontalScroll = (e) => {
     weekdayScrollRef.current.scrollTo({
@@ -41,7 +48,7 @@ export default function TimeTable({
 
   const courseViews = [];
   let colorIndex = 0;
-  let earlistGrid = NO_OF_HOURS; // Auto vertical scroll to earlistGrid
+  let earlistGrid = numOfHours; // Auto vertical scroll to earlistGrid
   const currentDay = new Date();
   const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
   const isWeekend = currentWeekday > 5;
@@ -75,7 +82,10 @@ export default function TimeTable({
                 color: colors[colorIndex % colors.length],
               }}
               onPress={eventOnPress && (() => eventOnPress(event))}
-              backgroundColor={COLORS.surface}
+              backgroundColor={
+                contentContainerStyle?.backgroundColor || COLORS.surface
+              }
+              configs={configs}
             />
           );
         });
@@ -96,7 +106,7 @@ export default function TimeTable({
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          <WeekdayText />
+          <WeekdayText configs={configs} />
         </ScrollView>
       </View>
       <ScrollView
@@ -104,14 +114,14 @@ export default function TimeTable({
         contentContainerStyle={[styles.courseContainer, contentContainerStyle]}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={() => {
-          if (earlistGrid !== NO_OF_HOURS) {
+          if (earlistGrid !== numOfHours) {
             courseVerticalScrollRef?.current?.scrollTo({
-              y: earlistGrid * CELL_WIDTH,
+              y: earlistGrid * cellWidth,
             });
           }
         }}
       >
-        <TimeTableTicks />
+        <TimeTableTicks configs={configs} />
         <ScrollView
           horizontal
           onScroll={onHorizontalScroll}
@@ -121,19 +131,16 @@ export default function TimeTable({
           onContentSizeChange={() => {
             weekendEvent &&
               courseHorizontalScrollRef?.current?.scrollTo({
-                x: 2 * CELL_WIDTH,
+                x: 2 * cellWidth,
               });
           }}
         >
-          <Svg
-            width={CELL_WIDTH * NO_OF_DAYS}
-            height={CELL_WIDTH * NO_OF_HOURS}
-          >
+          <Svg width={cellWidth * numOfDays} height={cellWidth * numOfHours}>
             <Defs>
               <Pattern
                 id="grid"
-                width={CELL_WIDTH}
-                height={CELL_WIDTH}
+                width={cellWidth}
+                height={cellWidth}
                 patternUnits="userSpaceOnUse"
               >
                 <Path
@@ -145,7 +152,7 @@ export default function TimeTable({
             </Defs>
             <Rect width="100%" height="100%" fill="url(#grid)" />
           </Svg>
-          <TimeIndicator />
+          <TimeIndicator configs={configs} />
           {courseViews}
         </ScrollView>
       </ScrollView>
@@ -153,7 +160,7 @@ export default function TimeTable({
   );
 }
 
-const getStyles = () =>
+const getStyles = (configs: Configs) =>
   StyleSheet.create({
     weekdayRow: {
       flexDirection: 'row',
@@ -161,7 +168,7 @@ const getStyles = () =>
       backgroundColor: COLORS.primary,
     },
     placeholder: {
-      width: LEFT_BAR_WIDTH,
+      width: configs.timeTicksWidth,
     },
     courseContainer: {
       flexDirection: 'row',

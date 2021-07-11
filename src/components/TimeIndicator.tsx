@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { COLORS, TIMETABLE_CONSTANTS } from '../utils/constants';
+import type { PropsWithConfigs } from '../types';
+import { COLORS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
-
-const { CELL_WIDTH, CELL_HEIGHT, START_HOUR, END_HOUR } = TIMETABLE_CONSTANTS;
 
 type CurrentTime = {
   hour: number;
@@ -13,7 +12,8 @@ type CurrentTime = {
 };
 
 // display an indicator line according to current time and weekday
-const TimeIndicator = () => {
+const TimeIndicator = ({ configs }: PropsWithConfigs<{}>) => {
+  const { cellWidth, cellHeight, startHour, endHour } = configs;
   const [currentTime, setCurrentTime] = useState<CurrentTime>({
     hour: 0,
     minute: 0,
@@ -34,29 +34,29 @@ const TimeIndicator = () => {
     };
   }, []);
 
-  if (currentTime.hour < START_HOUR && currentTime.hour > END_HOUR) {
+  if (currentTime.hour < startHour && currentTime.hour > endHour) {
     return null;
   }
 
   const topMarginValue =
-    (currentTime.hour - START_HOUR) * CELL_HEIGHT +
-    (currentTime.minute / 60.0) * CELL_HEIGHT;
+    (currentTime.hour - startHour) * cellHeight +
+    (currentTime.minute / 60.0) * cellHeight;
 
-  const styles = getStyles({ currentTime, topMarginValue });
+  const styles = getStyles({ currentTime, topMarginValue, cellWidth });
 
   return <View style={styles.timeIndicator} />;
 };
 
-const getStyles = ({ currentTime, topMarginValue }) =>
+const getStyles = ({ currentTime, topMarginValue, cellWidth }) =>
   StyleSheet.create({
     timeIndicator: {
       zIndex: 3,
       position: 'absolute',
       height: 1.5,
       backgroundColor: updateOpacity(COLORS.accent, 0.8),
-      marginLeft: (currentTime.day - 1) * CELL_WIDTH,
+      marginLeft: (currentTime.day - 1) * cellWidth,
       marginTop: topMarginValue,
-      width: CELL_WIDTH - 2,
+      width: cellWidth - 2,
     },
   });
 
