@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Timetable from 'react-native-timetable';
 
 const events = [
@@ -102,13 +103,21 @@ const events = [
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Timetable events={events} />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <StatusBar backgroundColor="rgba(21,101,192,1)" />
+        <View style={styles.container}>
+          <Timetable events={events} />
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',

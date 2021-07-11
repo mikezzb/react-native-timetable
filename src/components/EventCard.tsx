@@ -1,9 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import { TIMETABLE_CONSTANTS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import type { Event } from '../types';
+import colorMixing from '../utils/colorMixing';
 
 const { CELL_WIDTH, CELL_HEIGHT, START_HOUR } = TIMETABLE_CONSTANTS;
 
@@ -16,77 +17,57 @@ type EventCardProps = {
   onPress?: (...args: any[]) => any;
 };
 
-type StyleProps = {
-  durationHeight: number;
-  topMarginValue: number;
-  bgColor: string;
-  textColor: string;
-  day: number;
-};
-
 export default function EventCard({
   event,
-  backgroundColor,
   onPress,
+  backgroundColor,
 }: EventCardProps) {
+  const { styles, numOfLines } = getStyles(event, backgroundColor);
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={[styles.courseCard, styles.innerCard]}
+      onPress={onPress}
+    >
+      <Text
+        style={styles.courseCardTitle}
+        numberOfLines={2}
+        ellipsizeMode="clip"
+      >
+        {`${event.courseId} ${event.section}`}
+      </Text>
+      {Boolean(numOfLines) && (
+        <Text style={styles.courseCardLocation} numberOfLines={numOfLines}>
+          {event.location}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+}
+
+const getStyles = (event: Event, backgroundColor: string) => {
   const sTime = event.startTime.split(':').map((x) => parseInt(x, 10));
   const eTime = event.endTime.split(':').map((x) => parseInt(x, 10));
   const topMarginValue =
     (sTime[0] - START_HOUR) * CELL_WIDTH + (sTime[1] / 60.0) * CELL_WIDTH;
   const durationHeight =
     CELL_HEIGHT * (eTime[0] - sTime[0] + (eTime[1] - sTime[1]) / 60.0);
-  const bgColor = updateOpacity(event.color, 0.15);
   const textColor = updateOpacity(event.color, 0.8);
   const numOfLines = Math.floor(
     (durationHeight - 2 * TITLE_LINE_HEIGHT - 10) / SUBTITLE_LINE_HEIGHT
   );
-
-  const styles = getStyles({
-    durationHeight,
-    topMarginValue,
-    bgColor,
-    textColor,
-    day: event.day,
-  });
-
-  return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      style={[styles.courseCard, { backgroundColor: backgroundColor }]} // To hide grid lines below
-      onPress={onPress}
-    >
-      <View style={styles.innerCard}>
-        <Text
-          style={styles.courseCardTitle}
-          numberOfLines={2}
-          ellipsizeMode="clip"
-        >
-          {`${event.courseId} ${event.section}`}
-        </Text>
-        {Boolean(numOfLines) && (
-          <Text style={styles.courseCardLocation} numberOfLines={numOfLines}>
-            {event.location}
-          </Text>
-        )}
-      </View>
-    </TouchableOpacity>
+  const bgColor = colorMixing(
+    updateOpacity(event.color, 0.15),
+    backgroundColor
   );
-}
-
-const getStyles = ({
-  durationHeight,
-  topMarginValue,
-  bgColor,
-  textColor,
-  day,
-}: StyleProps) =>
-  StyleSheet.create({
+  const styles = StyleSheet.create({
     courseCard: {
       position: 'absolute',
       borderRadius: 4,
       zIndex: 2,
       width: CELL_WIDTH - 3,
-      marginLeft: CELL_WIDTH * (day - 1),
+      marginLeft: CELL_WIDTH * (event.day - 1),
       height: durationHeight,
       marginTop: topMarginValue,
     },
@@ -109,3 +90,5 @@ const getStyles = ({
       color: textColor,
     },
   });
+  return { styles, numOfLines };
+};

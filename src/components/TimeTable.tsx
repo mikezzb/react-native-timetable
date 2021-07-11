@@ -18,9 +18,9 @@ type TimeTableProps = {
 };
 
 export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
-  const weekdayScrollRef = useRef({});
-  const courseHorizontalScrollRef = useRef();
-  const courseVerticalScrollRef = useRef();
+  const weekdayScrollRef = useRef<null | ScrollView>(null);
+  const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
+  const courseVerticalScrollRef = useRef<null | ScrollView>(null);
 
   const styles = getStyles();
 
@@ -95,10 +95,11 @@ export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
         contentContainerStyle={styles.courseContainer}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={() => {
-          earlistGrid !== NO_OF_HOURS &&
-            courseVerticalScrollRef.current.scrollTo({
+          if (earlistGrid !== NO_OF_HOURS) {
+            courseVerticalScrollRef?.current?.scrollTo({
               y: earlistGrid * CELL_WIDTH,
             });
+          }
         }}
       >
         <View style={styles.timeTableTicks}>
@@ -112,13 +113,14 @@ export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
           showsHorizontalScrollIndicator={false}
           onContentSizeChange={() => {
             weekendEvent &&
-              courseHorizontalScrollRef.current.scrollTo({ x: 2 * CELL_WIDTH });
+              courseHorizontalScrollRef?.current?.scrollTo({
+                x: 2 * CELL_WIDTH,
+              });
           }}
         >
           <Svg
             width={CELL_WIDTH * NO_OF_DAYS}
             height={CELL_WIDTH * NO_OF_HOURS}
-            xmlns="http://www.w3.org/2000/svg"
           >
             <Defs>
               <Pattern
@@ -149,7 +151,7 @@ const getStyles = () =>
     weekdayRow: {
       flexDirection: 'row',
       height: 32,
-      backgroundColor: COLORS.background,
+      backgroundColor: COLORS.primary,
     },
     placeholder: {
       width: LEFT_BAR_WIDTH,

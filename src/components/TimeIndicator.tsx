@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { COLORS, TIMETABLE_CONSTANTS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 
-const { CELL_WIDTH, CELL_HEIGHT, START_HOUR } = TIMETABLE_CONSTANTS;
+const { CELL_WIDTH, CELL_HEIGHT, START_HOUR, END_HOUR } = TIMETABLE_CONSTANTS;
 
 type CurrentTime = {
   hour: number;
@@ -34,11 +34,21 @@ const TimeIndicator = () => {
     };
   }, []);
 
+  if (currentTime.hour < START_HOUR && currentTime.hour > END_HOUR) {
+    return null;
+  }
+
   const topMarginValue =
     (currentTime.hour - START_HOUR) * CELL_HEIGHT +
     (currentTime.minute / 60.0) * CELL_HEIGHT;
 
-  const styles = StyleSheet.create({
+  const styles = getStyles({ currentTime, topMarginValue });
+
+  return <View style={styles.timeIndicator} />;
+};
+
+const getStyles = ({ currentTime, topMarginValue }) =>
+  StyleSheet.create({
     timeIndicator: {
       zIndex: 3,
       position: 'absolute',
@@ -49,11 +59,5 @@ const TimeIndicator = () => {
       width: CELL_WIDTH - 2,
     },
   });
-
-  return (
-    currentTime.hour >= 8 &&
-    currentTime.hour <= 19 && <View style={styles.timeIndicator} />
-  );
-};
 
 export default TimeIndicator;
