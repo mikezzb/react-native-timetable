@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 import { Svg, Defs, Pattern, Rect, Path } from 'react-native-svg';
 import EventCard from './EventCard';
 import TimeIndicator from './TimeIndicator';
@@ -14,10 +14,19 @@ const { CELL_WIDTH, NO_OF_DAYS, NO_OF_HOURS, LEFT_BAR_WIDTH } =
 
 type TimeTableProps = {
   events: EventsGroup[];
-  eventOnPress: (...args: any[]) => any;
+  eventOnPress?: (...args: any[]) => any;
+  headerStyle?: ViewStyle;
+  contentContainerStyle?: ViewStyle;
+  eventColors?: string[];
 };
 
-export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
+export default function TimeTable({
+  events,
+  eventOnPress,
+  headerStyle,
+  contentContainerStyle,
+  eventColors,
+}: TimeTableProps) {
   const weekdayScrollRef = useRef<null | ScrollView>(null);
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
@@ -51,7 +60,7 @@ export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
           if (isWeekend && day > 5) {
             weekendEvent = true;
           }
-          const colors = COLORS.randomColors;
+          const colors = eventColors || COLORS.randomColors;
           courseViews.push(
             <EventCard
               key={`${event.courseId}-${k}-${day}`}
@@ -79,7 +88,7 @@ export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
 
   return (
     <>
-      <View style={styles.weekdayRow}>
+      <View style={[styles.weekdayRow, headerStyle]}>
         <View style={styles.placeholder} />
         <ScrollView
           scrollEnabled={false}
@@ -92,7 +101,7 @@ export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
       </View>
       <ScrollView
         ref={courseVerticalScrollRef}
-        contentContainerStyle={styles.courseContainer}
+        contentContainerStyle={[styles.courseContainer, contentContainerStyle]}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={() => {
           if (earlistGrid !== NO_OF_HOURS) {
@@ -102,9 +111,7 @@ export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
           }
         }}
       >
-        <View style={styles.timeTableTicks}>
-          <TimeTableTicks />
-        </View>
+        <TimeTableTicks />
         <ScrollView
           horizontal
           onScroll={onHorizontalScroll}
@@ -156,14 +163,10 @@ const getStyles = () =>
     placeholder: {
       width: LEFT_BAR_WIDTH,
     },
-    timeTableTicks: {
-      marginTop: -12,
-      flexDirection: 'column',
-      width: LEFT_BAR_WIDTH,
-    },
     courseContainer: {
       flexDirection: 'row',
       backgroundColor: COLORS.surface,
+      width: '100%',
     },
     courseList: {
       flexDirection: 'column',
