@@ -7,11 +7,17 @@ import { COLORS, TIMETABLE_CONSTANTS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
+import type { EventsGroup } from '../types';
 
 const { CELL_WIDTH, NO_OF_DAYS, NO_OF_HOURS, LEFT_BAR_WIDTH } =
   TIMETABLE_CONSTANTS;
 
-export default function TimeTable({ events, eventOnPress }) {
+type TimeTableProps = {
+  events: EventsGroup[];
+  eventOnPress: (...args: any[]) => any;
+};
+
+export default function TimeTable({ events, eventOnPress }: TimeTableProps) {
   const weekdayScrollRef = useRef({});
   const courseHorizontalScrollRef = useRef();
   const courseVerticalScrollRef = useRef();
@@ -59,7 +65,7 @@ export default function TimeTable({ events, eventOnPress }) {
                 location: v.locations[i],
                 color: colors[colorIndex % colors.length],
               }}
-              onPress={() => eventOnPress(event)}
+              onPress={eventOnPress && (() => eventOnPress(event))}
               backgroundColor={COLORS.surface}
             />
           );
@@ -155,7 +161,7 @@ const getStyles = () =>
     },
     courseContainer: {
       flexDirection: 'row',
-      backgroundColor: COLORS.background,
+      backgroundColor: COLORS.surface,
     },
     courseList: {
       flexDirection: 'column',

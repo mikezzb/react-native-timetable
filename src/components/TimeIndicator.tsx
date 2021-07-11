@@ -6,9 +6,19 @@ import updateOpacity from '../utils/updateOpacity';
 
 const { CELL_WIDTH, CELL_HEIGHT, START_HOUR } = TIMETABLE_CONSTANTS;
 
+type CurrentTime = {
+  hour: number;
+  minute: number;
+  day: number;
+};
+
 // display an indicator line according to current time and weekday
 const TimeIndicator = () => {
-  const [currentTime, setCurrentTime] = useState({});
+  const [currentTime, setCurrentTime] = useState<CurrentTime>({
+    hour: 0,
+    minute: 0,
+    day: 0,
+  });
 
   useEffect(() => {
     const timeUpdater = setInterval(() => {

@@ -3,15 +3,34 @@ import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
 import { TIMETABLE_CONSTANTS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
+import type { Event } from '../types';
 
 const { CELL_WIDTH, CELL_HEIGHT, START_HOUR } = TIMETABLE_CONSTANTS;
 
 const TITLE_LINE_HEIGHT = 12;
 const SUBTITLE_LINE_HEIGHT = 12;
 
-export default function EventCard({ event, backgroundColor, onPress }) {
-  const sTime = event.startTime.split(':');
-  const eTime = event.endTime.split(':');
+type EventCardProps = {
+  event: Event;
+  backgroundColor: string;
+  onPress?: (...args: any[]) => any;
+};
+
+type StyleProps = {
+  durationHeight: number;
+  topMarginValue: number;
+  bgColor: string;
+  textColor: string;
+  day: number;
+};
+
+export default function EventCard({
+  event,
+  backgroundColor,
+  onPress,
+}: EventCardProps) {
+  const sTime = event.startTime.split(':').map((x) => parseInt(x, 10));
+  const eTime = event.endTime.split(':').map((x) => parseInt(x, 10));
   const topMarginValue =
     (sTime[0] - START_HOUR) * CELL_WIDTH + (sTime[1] / 60.0) * CELL_WIDTH;
   const durationHeight =
@@ -22,13 +41,13 @@ export default function EventCard({ event, backgroundColor, onPress }) {
     (durationHeight - 2 * TITLE_LINE_HEIGHT - 10) / SUBTITLE_LINE_HEIGHT
   );
 
-  const styles = getStyles(
+  const styles = getStyles({
     durationHeight,
     topMarginValue,
     bgColor,
     textColor,
-    event.day
-  );
+    day: event.day,
+  });
 
   return (
     <TouchableOpacity
@@ -54,7 +73,13 @@ export default function EventCard({ event, backgroundColor, onPress }) {
   );
 }
 
-const getStyles = (durationHeight, topMarginValue, bgColor, textColor, day) =>
+const getStyles = ({
+  durationHeight,
+  topMarginValue,
+  bgColor,
+  textColor,
+  day,
+}: StyleProps) =>
   StyleSheet.create({
     courseCard: {
       position: 'absolute',

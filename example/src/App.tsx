@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import Timetable from 'react-native-timetable';
 
 const events = [
