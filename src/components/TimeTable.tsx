@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
-import { Svg, Defs, Pattern, Rect, Path } from 'react-native-svg';
 
 import EventCard from './EventCard';
 import TimeIndicator from './TimeIndicator';
@@ -8,10 +7,13 @@ import { COLORS, TIMETABLE_CONSTANTS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
-import type { Configs, EventsGroup } from '../types';
+import type { Configs, EventsGroup, Event } from '../types';
+import groupToEvents from '../utils/groupToEvents';
+import TimeTableGrid from './TimeTableGrid';
 
 type TimeTableProps = {
-  events: EventsGroup[];
+  events?: Event[];
+  eventsGroup?: EventsGroup[];
   eventOnPress?: (...args: any[]) => any;
   headerStyle?: ViewStyle;
   contentContainerStyle?: ViewStyle;
@@ -21,6 +23,7 @@ type TimeTableProps = {
 
 export default function TimeTable({
   events,
+  eventsGroup,
   eventOnPress,
   headerStyle,
   contentContainerStyle,
@@ -46,54 +49,19 @@ export default function TimeTable({
     });
   };
 
-  const courseViews = [];
-  let colorIndex = 0;
   let earlistGrid = numOfHours; // Auto vertical scroll to earlistGrid
-  const currentDay = new Date();
-  const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
-  const isWeekend = currentWeekday > 5;
   let weekendEvent = false; // Auto horizontal scroll if isWeekend and has weekendEvent
 
-  try {
-    events.forEach((event) => {
-      Object.entries(event.sections).forEach(([k, v]) => {
-        (v.days || []).forEach((day, i) => {
-          const sTime = v.startTimes[i].split(':');
-          const timeGrid =
-            parseInt(sTime[0], 10) + parseInt(sTime[1], 10) / 60 - 8;
-          if (timeGrid < earlistGrid) {
-            earlistGrid = timeGrid;
-          }
-          if (isWeekend && day > 5) {
-            weekendEvent = true;
-          }
-          const colors = eventColors || COLORS.randomColors;
-          courseViews.push(
-            <EventCard
-              key={`${event.courseId}-${k}-${day}`}
-              event={{
-                courseId: event.courseId,
-                title: event.title,
-                section: k,
-                day: day,
-                startTime: v.startTimes[i],
-                endTime: v.endTimes[i],
-                location: v.locations[i],
-                color: colors[colorIndex % colors.length],
-              }}
-              onPress={eventOnPress && (() => eventOnPress(event))}
-              backgroundColor={
-                contentContainerStyle?.backgroundColor || COLORS.surface
-              }
-              configs={configs}
-            />
-          );
-        });
-      });
-      colorIndex++;
+  // Parse eventsGroup to events
+  if (eventsGroup) {
+    const parsed = groupToEvents({
+      eventsGroup,
+      numOfHours,
+      eventColors,
     });
-  } catch (error) {
-    console.warn('Invalid TimeTable');
+    events = parsed.events;
+    earlistGrid = parsed.earlistGrid || earlistGrid;
+    weekendEvent = parsed.weekendEvent;
   }
 
   return (
@@ -135,25 +103,27 @@ export default function TimeTable({
               });
           }}
         >
-          <Svg width={cellWidth * numOfDays} height={cellWidth * numOfHours}>
-            <Defs>
-              <Pattern
-                id="grid"
-                width={cellWidth}
-                height={cellWidth}
-                patternUnits="userSpaceOnUse"
-              >
-                <Path
-                  d="M 80 0 L 0 0 0 80"
-                  fill="none"
-                  stroke={updateOpacity(COLORS.text, 0.05)}
-                />
-              </Pattern>
-            </Defs>
-            <Rect width="100%" height="100%" fill="url(#grid)" />
-          </Svg>
+          <TimeTableGrid
+            width={cellWidth * numOfDays}
+            height={cellWidth * numOfHours}
+            cellWidth={cellWidth}
+            stroke={updateOpacity(COLORS.text, 0.05)}
+          />
           <TimeIndicator configs={configs} />
-          {courseViews}
+          {events.map((event, i) => (
+            <EventCard
+              key={`${event.courseId}-${i}-${event.day}`}
+              event={{
+                ...event,
+                color: event.color || eventColors[i % eventColors.length],
+              }}
+              onPress={eventOnPress && (() => eventOnPress(event))}
+              backgroundColor={
+                contentContainerStyle?.backgroundColor || COLORS.surface
+              }
+              configs={configs}
+            />
+          ))}
         </ScrollView>
       </ScrollView>
     </>

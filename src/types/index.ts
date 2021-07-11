@@ -9,18 +9,18 @@ interface Event {
   section?: string;
 }
 
-interface EventsGroup {
-  courseId: string;
-  sections: Events[];
-  title?: string;
-}
-
 interface Events {
   startTimes: string[];
   endTimes: string[];
   days: number[];
   locations: string[];
   instructors: string[];
+}
+
+interface EventsGroup {
+  courseId: string;
+  sections: Events[];
+  title?: string;
 }
 
 interface Configs {

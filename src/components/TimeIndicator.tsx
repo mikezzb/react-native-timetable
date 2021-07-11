@@ -26,7 +26,7 @@ const TimeIndicator = ({ configs }: PropsWithConfigs<{}>) => {
       setCurrentTime({
         hour: d.getHours(),
         minute: d.getMinutes(),
-        day: d.getDay(), // sunday is 0, monday is 1
+        day: d.getDay() || 7, // sunday is 0, so change to 7 for calculation of marginLeft
       });
     }, 1000);
     return () => {
