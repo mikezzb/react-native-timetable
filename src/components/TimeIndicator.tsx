@@ -39,8 +39,7 @@ const TimeIndicator = ({ configs }: PropsWithConfigs<{}>) => {
   }
 
   const topMarginValue =
-    (currentTime.hour - startHour) * cellHeight +
-    (currentTime.minute / 60.0) * cellHeight;
+    (currentTime.hour - startHour + currentTime.minute / 60.0) * cellHeight;
 
   const styles = getStyles({ currentTime, topMarginValue, cellWidth });
 

@@ -33,7 +33,7 @@ export default function EventCard({
         numberOfLines={2}
         ellipsizeMode="clip"
       >
-        {`${event.courseId} ${event.section}`}
+        {`${event.courseId}${' ' + event.section}`}
       </Text>
       {Boolean(numOfLines) && (
         <Text style={styles.courseCardLocation} numberOfLines={numOfLines}>
@@ -49,7 +49,7 @@ const getStyles = (event: Event, configs: Configs, backgroundColor: string) => {
   const sTime = event.startTime.split(':').map((x) => parseInt(x, 10));
   const eTime = event.endTime.split(':').map((x) => parseInt(x, 10));
   const topMarginValue =
-    (sTime[0] - startHour) * cellWidth + (sTime[1] / 60.0) * cellWidth;
+    (sTime[0] - startHour) * cellHeight + (sTime[1] / 60.0) * cellHeight;
   const durationHeight =
     cellHeight * (eTime[0] - sTime[0] + (eTime[1] - sTime[1]) / 60.0);
   const textColor = updateOpacity(event.color, 0.8);

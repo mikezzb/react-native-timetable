@@ -18,7 +18,7 @@ const groupToEvents = ({
   numOfHours,
   eventColors,
 }: GroupToEventsProps): GroupToEventsReturns => {
-  let events: Event[] = [];
+  const events: Event[] = [];
   let colorIndex = 0;
   let earlistGrid = numOfHours; // Auto vertical scroll to earlistGrid
   let weekendEvent = false;

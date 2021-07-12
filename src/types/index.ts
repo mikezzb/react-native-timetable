@@ -30,6 +30,7 @@ interface Configs {
   cellWidth: number;
   cellHeight: number;
   numOfDays: number;
+  numOfDaysPerPage: number;
   timeTicksWidth: number;
 }
 

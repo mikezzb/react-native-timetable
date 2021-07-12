@@ -3,22 +3,23 @@ import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 
 import EventCard from './EventCard';
 import TimeIndicator from './TimeIndicator';
-import { COLORS, TIMETABLE_CONSTANTS } from '../utils/constants';
+import { COLORS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
 import type { Configs, EventsGroup, Event } from '../types';
-import groupToEvents from '../utils/groupToEvents';
+import groupToEvents from '../utils/getEventsFromGroup';
 import TimeTableGrid from './TimeTableGrid';
+import getConfigs from '../utils/getConfigs';
 
 type TimeTableProps = {
   events?: Event[];
   eventsGroup?: EventsGroup[];
   eventOnPress?: (...args: any[]) => any;
+  eventColors?: string[];
+  configs?: Partial<Configs>;
   headerStyle?: ViewStyle;
   contentContainerStyle?: ViewStyle;
-  eventColors?: string[];
-  configs?: Configs;
 };
 
 export default function TimeTable({
@@ -28,20 +29,18 @@ export default function TimeTable({
   headerStyle,
   contentContainerStyle,
   eventColors,
-  configs,
+  configs: propConfigs,
 }: TimeTableProps) {
   const weekdayScrollRef = useRef<null | ScrollView>(null);
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
 
-  configs = {
-    ...TIMETABLE_CONSTANTS,
-    ...configs,
-  };
+  const configs = getConfigs(propConfigs);
 
-  const { cellWidth, numOfDays, numOfHours } = configs;
+  const { cellWidth, cellHeight, numOfDays, numOfHours, timeTicksWidth } =
+    configs;
 
-  const styles = getStyles(configs);
+  const styles = getStyles({ timeTicksWidth });
 
   const onHorizontalScroll = (e) => {
     weekdayScrollRef.current.scrollTo({
@@ -84,7 +83,7 @@ export default function TimeTable({
         onContentSizeChange={() => {
           if (earlistGrid !== numOfHours) {
             courseVerticalScrollRef?.current?.scrollTo({
-              y: earlistGrid * cellWidth,
+              y: earlistGrid * cellHeight,
             });
           }
         }}
@@ -107,6 +106,7 @@ export default function TimeTable({
             width={cellWidth * numOfDays}
             height={cellWidth * numOfHours}
             cellWidth={cellWidth}
+            cellHeight={cellHeight}
             stroke={updateOpacity(COLORS.text, 0.05)}
           />
           <TimeIndicator configs={configs} />
@@ -130,7 +130,7 @@ export default function TimeTable({
   );
 }
 
-const getStyles = (configs: Configs) =>
+const getStyles = ({ timeTicksWidth }) =>
   StyleSheet.create({
     weekdayRow: {
       flexDirection: 'row',
@@ -138,7 +138,7 @@ const getStyles = (configs: Configs) =>
       backgroundColor: COLORS.primary,
     },
     placeholder: {
-      width: configs.timeTicksWidth,
+      width: timeTicksWidth,
     },
     courseContainer: {
       flexDirection: 'row',
