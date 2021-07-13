@@ -1,6 +1,6 @@
 import TimeTable from './components/TimeTable';
-import type { Event, EventsGroup } from './types';
+import type { Event, EventGroup } from './types';
 
-export type { Event, EventsGroup };
+export type { Event, EventGroup };
 
 export default TimeTable;

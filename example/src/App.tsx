@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { Alert, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Timetable from 'react-native-timetable';
+import TimeTable from '@mikezzb/react-native-timetable';
 
-const eventsGroup = [
+const eventGroups = [
   {
     courseId: 'AIST3020',
     title: 'Intro to Computer Systems',
@@ -292,8 +292,9 @@ export default function App() {
       <SafeAreaView style={styles.safeAreaContainer}>
         <StatusBar backgroundColor="rgba(21,101,192,1)" />
         <View style={styles.container}>
-          <Timetable
-            eventsGroup={eventsGroup}
+          <TimeTable
+            eventGroups={eventGroups}
+            // events={events}
             eventOnPress={(event) => Alert.alert(`${JSON.stringify(event)}`)}
           />
         </View>
@@ -308,12 +309,5 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });

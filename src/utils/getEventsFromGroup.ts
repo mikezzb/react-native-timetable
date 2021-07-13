@@ -1,8 +1,7 @@
-import type { EventsGroup, Event } from '../types';
-import { COLORS } from './constants';
+import type { EventGroup, Event } from '../types';
 
 type GroupToEventsProps = {
-  eventsGroup: EventsGroup[];
+  eventGroups: EventGroup[];
   numOfHours: number;
   eventColors: string[];
 };
@@ -14,7 +13,7 @@ type GroupToEventsReturns = {
 };
 
 const groupToEvents = ({
-  eventsGroup,
+  eventGroups,
   numOfHours,
   eventColors,
 }: GroupToEventsProps): GroupToEventsReturns => {
@@ -26,7 +25,7 @@ const groupToEvents = ({
   const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
   const isWeekend = currentWeekday > 5;
   try {
-    eventsGroup.forEach((event) => {
+    eventGroups.forEach((event) => {
       Object.entries(event.sections).forEach(([k, v]) => {
         (v.days || []).forEach((day, i) => {
           const sTime = v.startTimes[i].split(':');
@@ -38,7 +37,6 @@ const groupToEvents = ({
           if (isWeekend && day > 5) {
             weekendEvent = true;
           }
-          const colors = eventColors || COLORS.randomColors;
           events.push({
             courseId: event.courseId,
             title: event.title,
@@ -47,7 +45,7 @@ const groupToEvents = ({
             startTime: v.startTimes[i],
             endTime: v.endTimes[i],
             location: v.locations[i],
-            color: colors[colorIndex % colors.length],
+            color: eventColors[colorIndex % eventColors.length],
           });
         });
       });

@@ -3,7 +3,7 @@ interface Event {
   day: number;
   startTime: string;
   endTime: string;
-  color: string;
+  color?: string;
   title?: string;
   location?: string;
   section?: string;
@@ -14,12 +14,15 @@ interface Events {
   endTimes: string[];
   days: number[];
   locations: string[];
-  instructors: string[];
 }
 
-interface EventsGroup {
+interface Sections {
+  [section: string]: Events;
+}
+
+interface EventGroup {
   courseId: string;
-  sections: Events[];
+  sections: Sections;
   title?: string;
 }
 
@@ -38,4 +41,4 @@ type PropsWithConfigs<T> = T & {
   configs: Configs;
 };
 
-export { EventsGroup, Events, Event, Configs, PropsWithConfigs };
+export { EventGroup, Events, Event, Configs, PropsWithConfigs };

@@ -33,7 +33,7 @@ export default function EventCard({
         numberOfLines={2}
         ellipsizeMode="clip"
       >
-        {`${event.courseId}${' ' + event.section}`}
+        {`${event.courseId}${event.section ? ` ${event.section}` : ''}`}
       </Text>
       {Boolean(numOfLines) && (
         <Text style={styles.courseCardLocation} numberOfLines={numOfLines}>

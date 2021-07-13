@@ -7,14 +7,14 @@ import { COLORS } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
-import type { Configs, EventsGroup, Event } from '../types';
-import groupToEvents from '../utils/getEventsFromGroup';
+import type { Configs, EventGroup, Event } from '../types';
+import getEventsFromGroup from '../utils/getEventsFromGroup';
 import TimeTableGrid from './TimeTableGrid';
 import getConfigs from '../utils/getConfigs';
 
 type TimeTableProps = {
   events?: Event[];
-  eventsGroup?: EventsGroup[];
+  eventGroups?: EventGroup[];
   eventOnPress?: (...args: any[]) => any;
   eventColors?: string[];
   configs?: Partial<Configs>;
@@ -24,7 +24,7 @@ type TimeTableProps = {
 
 export default function TimeTable({
   events,
-  eventsGroup,
+  eventGroups,
   eventOnPress,
   headerStyle,
   contentContainerStyle,
@@ -35,6 +35,7 @@ export default function TimeTable({
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
 
+  eventColors = eventColors || COLORS.randomColors;
   const configs = getConfigs(propConfigs);
 
   const { cellWidth, cellHeight, numOfDays, numOfHours, timeTicksWidth } =
@@ -51,10 +52,10 @@ export default function TimeTable({
   let earlistGrid = numOfHours; // Auto vertical scroll to earlistGrid
   let weekendEvent = false; // Auto horizontal scroll if isWeekend and has weekendEvent
 
-  // Parse eventsGroup to events
-  if (eventsGroup) {
-    const parsed = groupToEvents({
-      eventsGroup,
+  // Parse eventGroups to events
+  if (eventGroups) {
+    const parsed = getEventsFromGroup({
+      eventGroups,
       numOfHours,
       eventColors,
     });
@@ -64,7 +65,7 @@ export default function TimeTable({
   }
 
   return (
-    <>
+    <View style={contentContainerStyle}>
       <View style={[styles.weekdayRow, headerStyle]}>
         <View style={styles.placeholder} />
         <ScrollView
@@ -78,7 +79,7 @@ export default function TimeTable({
       </View>
       <ScrollView
         ref={courseVerticalScrollRef}
-        contentContainerStyle={[styles.courseContainer, contentContainerStyle]}
+        contentContainerStyle={styles.courseContainer}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={() => {
           if (earlistGrid !== numOfHours) {
@@ -126,7 +127,7 @@ export default function TimeTable({
           ))}
         </ScrollView>
       </ScrollView>
-    </>
+    </View>
   );
 }
 

@@ -10,7 +10,6 @@ const colorMixing = (color: string, base?: string) => {
   const baseColor = base || COLORS.surface;
   const mix1 = rgbaToArray(baseColor);
   const mix2 = rgbaToArray(color);
-  // console.log(`Mix1: ${mix1} Mix2: ${mix2}`);
   const mix = [];
   mix[3] = 1 - (1 - mix2[3]) * (1 - mix1[3]); // alpha
   mix[0] = Math.round(
