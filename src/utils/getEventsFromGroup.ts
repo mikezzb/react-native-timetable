@@ -25,7 +25,7 @@ const groupToEvents = ({
   const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
   const isWeekend = currentWeekday > 5;
   try {
-    eventGroups.forEach((event) => {
+    eventGroups.forEach((event, groupIndex) => {
       Object.entries(event.sections).forEach(([k, v]) => {
         (v.days || []).forEach((day, i) => {
           const sTime = v.startTimes[i].split(':');
@@ -46,6 +46,7 @@ const groupToEvents = ({
             endTime: v.endTimes[i],
             location: v.locations[i],
             color: eventColors[colorIndex % eventColors.length],
+            groupIndex: groupIndex,
           });
         });
       });

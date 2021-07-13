@@ -7,6 +7,7 @@ interface Event {
   title?: string;
   location?: string;
   section?: string;
+  groupIndex?: number; // index of the group in eventGroups array that this event belongs to
 }
 
 interface Events {

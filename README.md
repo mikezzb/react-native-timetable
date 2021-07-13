@@ -9,6 +9,7 @@ React Native Timetable View
 Run example by performing the following steps:
 ```sh
 git clone https://github.com/mikezzb/react-native-timetable.git
+cd react-native-timetable
 yarn install
 yarn example install
 yarn example android

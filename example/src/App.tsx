@@ -295,7 +295,10 @@ export default function App() {
           <TimeTable
             eventGroups={eventGroups}
             // events={events}
-            eventOnPress={(event) => Alert.alert(`${JSON.stringify(event)}`)}
+            eventOnPress={(event) => {
+              Alert.alert(`${JSON.stringify(event)}`);
+              console.log(eventGroups[event.groupIndex]); // only for eventGroups
+            }}
           />
         </View>
       </SafeAreaView>
