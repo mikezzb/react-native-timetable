@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import type { PropsWithConfigs } from '../types';
-import { COLORS } from '../utils/constants';
+import { THEME } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 
 type CurrentTime = {
@@ -52,7 +52,7 @@ const getStyles = ({ currentTime, topMarginValue, cellWidth }) =>
       zIndex: 3,
       position: 'absolute',
       height: 1.5,
-      backgroundColor: updateOpacity(COLORS.accent, 0.8),
+      backgroundColor: updateOpacity(THEME.accent, 0.8),
       marginLeft: (currentTime.day - 1) * cellWidth,
       marginTop: topMarginValue,
       width: cellWidth - 2,

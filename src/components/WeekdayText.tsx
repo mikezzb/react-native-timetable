@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { PropsWithConfigs } from 'src/types';
 
-import { COLORS, WEEKDAYS } from '../utils/constants';
+import { THEME, WEEKDAYS } from '../utils/constants';
 
 export default function WeekdayText({ configs }: PropsWithConfigs<{}>) {
   const { cellWidth, numOfDays } = configs;
@@ -42,7 +42,7 @@ const getStyles = ({ cellWidth }) =>
       alignItems: 'center',
     },
     weekdayTextHighlight: {
-      color: COLORS.accent,
+      color: THEME.accent,
     },
     weekdayText: {
       fontSize: 11,

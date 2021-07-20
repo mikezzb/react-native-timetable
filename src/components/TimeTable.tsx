@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { createContext, useRef } from 'react';
 import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 
 import EventCard from './EventCard';
 import TimeIndicator from './TimeIndicator';
-import { COLORS } from '../utils/constants';
+import { EVENT_COLORS, THEME } from '../utils/constants';
 import updateOpacity from '../utils/updateOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
@@ -20,7 +20,12 @@ type TimeTableProps = {
   configs?: Partial<Configs>;
   headerStyle?: ViewStyle;
   contentContainerStyle?: ViewStyle;
+  theme?: Partial<typeof THEME>;
 };
+
+export const ThemeContext = createContext<typeof THEME>(null);
+
+export const ConfigsContext = createContext<Configs>(null);
 
 export default function TimeTable({
   events,
@@ -28,15 +33,20 @@ export default function TimeTable({
   eventOnPress,
   headerStyle,
   contentContainerStyle,
-  eventColors,
+  eventColors = EVENT_COLORS,
   configs: propConfigs,
+  theme: propTheme,
 }: TimeTableProps) {
   const weekdayScrollRef = useRef<null | ScrollView>(null);
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
 
-  eventColors = eventColors || COLORS.randomColors;
   const configs = getConfigs(propConfigs);
+
+  const theme = {
+    ...THEME,
+    ...propTheme,
+  };
 
   const { cellWidth, cellHeight, numOfDays, numOfHours, timeTicksWidth } =
     configs;
@@ -65,69 +75,73 @@ export default function TimeTable({
   }
 
   return (
-    <View style={contentContainerStyle}>
-      <View style={[styles.weekdayRow, headerStyle]}>
-        <View style={styles.placeholder} />
-        <ScrollView
-          scrollEnabled={false}
-          ref={weekdayScrollRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          <WeekdayText configs={configs} />
-        </ScrollView>
-      </View>
-      <ScrollView
-        ref={courseVerticalScrollRef}
-        contentContainerStyle={styles.courseContainer}
-        showsVerticalScrollIndicator={false}
-        onContentSizeChange={() => {
-          if (earlistGrid !== numOfHours) {
-            courseVerticalScrollRef?.current?.scrollTo({
-              y: earlistGrid * cellHeight,
-            });
-          }
-        }}
-      >
-        <TimeTableTicks configs={configs} />
-        <ScrollView
-          horizontal
-          onScroll={onHorizontalScroll}
-          ref={courseHorizontalScrollRef}
-          contentContainerStyle={styles.courseList}
-          showsHorizontalScrollIndicator={false}
-          onContentSizeChange={() => {
-            weekendEvent &&
-              courseHorizontalScrollRef?.current?.scrollTo({
-                x: 2 * cellWidth,
-              });
-          }}
-        >
-          <TimeTableGrid
-            width={cellWidth * numOfDays}
-            height={cellWidth * numOfHours}
-            cellWidth={cellWidth}
-            cellHeight={cellHeight}
-            stroke={updateOpacity(COLORS.text, 0.05)}
-          />
-          <TimeIndicator configs={configs} />
-          {events.map((event, i) => (
-            <EventCard
-              key={`${event.courseId}-${i}-${event.day}`}
-              event={{
-                ...event,
-                color: event.color || eventColors[i % eventColors.length],
-              }}
-              onPress={eventOnPress && (() => eventOnPress(event))}
-              backgroundColor={
-                contentContainerStyle?.backgroundColor || COLORS.surface
+    <ConfigsContext.Provider value={configs}>
+      <ThemeContext.Provider value={theme}>
+        <View style={contentContainerStyle}>
+          <View style={[styles.weekdayRow, headerStyle]}>
+            <View style={styles.placeholder} />
+            <ScrollView
+              scrollEnabled={false}
+              ref={weekdayScrollRef}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            >
+              <WeekdayText configs={configs} />
+            </ScrollView>
+          </View>
+          <ScrollView
+            ref={courseVerticalScrollRef}
+            contentContainerStyle={styles.courseContainer}
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={() => {
+              if (earlistGrid !== numOfHours) {
+                courseVerticalScrollRef?.current?.scrollTo({
+                  y: earlistGrid * cellHeight,
+                });
               }
-              configs={configs}
-            />
-          ))}
-        </ScrollView>
-      </ScrollView>
-    </View>
+            }}
+          >
+            <TimeTableTicks configs={configs} />
+            <ScrollView
+              horizontal
+              onScroll={onHorizontalScroll}
+              ref={courseHorizontalScrollRef}
+              contentContainerStyle={styles.courseList}
+              showsHorizontalScrollIndicator={false}
+              onContentSizeChange={() => {
+                weekendEvent &&
+                  courseHorizontalScrollRef?.current?.scrollTo({
+                    x: 2 * cellWidth,
+                  });
+              }}
+            >
+              <TimeTableGrid
+                width={cellWidth * numOfDays}
+                height={cellWidth * numOfHours}
+                cellWidth={cellWidth}
+                cellHeight={cellHeight}
+                stroke={updateOpacity(THEME.text, 0.05)}
+              />
+              <TimeIndicator configs={configs} />
+              {events.map((event, i) => (
+                <EventCard
+                  key={`${event.courseId}-${i}-${event.day}`}
+                  event={{
+                    ...event,
+                    color: event.color || eventColors[i % eventColors.length],
+                  }}
+                  onPress={eventOnPress && (() => eventOnPress(event))}
+                  backgroundColor={
+                    contentContainerStyle?.backgroundColor || THEME.surface
+                  }
+                  configs={configs}
+                />
+              ))}
+            </ScrollView>
+          </ScrollView>
+        </View>
+      </ThemeContext.Provider>
+    </ConfigsContext.Provider>
   );
 }
 
@@ -136,14 +150,14 @@ const getStyles = ({ timeTicksWidth }) =>
     weekdayRow: {
       flexDirection: 'row',
       height: 32,
-      backgroundColor: COLORS.primary,
+      backgroundColor: THEME.primary,
     },
     placeholder: {
       width: timeTicksWidth,
     },
     courseContainer: {
       flexDirection: 'row',
-      backgroundColor: COLORS.surface,
+      backgroundColor: THEME.surface,
       width: '100%',
     },
     courseList: {

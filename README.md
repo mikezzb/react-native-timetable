@@ -89,8 +89,9 @@ You can choose to pass either `eventGroups`  or `events` to make timetable event
 | `eventOnPress` | `(event) => any` | (Optional) On press function for an event card, event object will be passed as parameter |
 | `eventColors` | `string[]`            | (Optional) Event card colors in `rgba` |
 | `configs`       | [`Configs`](#Configs) | (Optional) Configurations like `numOfDays`, `startHour`, `timeTickWidth` |
-| `headerStyles` | `ViewStyle` | (Optional) Header styles |
+| `headerStyle` | `ViewStyle` | (Optional) Header styles |
 | `contentContainerStyle` | `ViewStyle` | (Optional) Event cards container styles |
+| `theme` | `Theme` | (Optional) Overall theme for timetable, such as header , background, and text colors |
 
 ### Configs
 
@@ -106,7 +107,7 @@ Same index in events values array map to an event
 
 ### Event
 
-Same index in events values array map to an event
+Each event is a card displayed on timetable
 
 | Property    | Type     | Description                                        |
 | ----------- | -------- | -------------------------------------------------- |
@@ -130,7 +131,7 @@ Collection of events sharing common properties like `courseId`
 
 ### Events
 
-Same index in events values array map to an event
+Same index in events values array map to an event, displayed as a collection of event cards with same color
 
 | Property      | Type       |
 | ------------- | ---------- |
@@ -139,6 +140,17 @@ Same index in events values array map to an event
 | `days`        | `number[]` |
 | `locations`   | `string[]` |
 | `instructors` | `string[]` |
+
+### Theme
+
+| Property  | Type     | Description                                      |
+| --------- | -------- | ------------------------------------------------ |
+| `primary` | `string` | header color                                     |
+| `accent`  | `string` | highlighted weekday text color                   |
+| `surface` | `string` | background color                                 |
+| `text`    | `string` | base color for timetable ticks and weekday texts |
+
+
 
 ## Example
 

@@ -1,4 +1,4 @@
-import { COLORS } from './constants';
+import { THEME } from './constants';
 
 const rgbaToArray = (rgba: string) => {
   const arr = rgba.substr(5).split(')')[0].split(',');
@@ -7,7 +7,7 @@ const rgbaToArray = (rgba: string) => {
 };
 
 const colorMixing = (color: string, base?: string) => {
-  const baseColor = base || COLORS.surface;
+  const baseColor = base || THEME.surface;
   const mix1 = rgbaToArray(baseColor);
   const mix2 = rgbaToArray(color);
   const mix = [];
