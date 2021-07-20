@@ -38,8 +38,4 @@ interface Configs {
   timeTicksWidth: number;
 }
 
-type PropsWithConfigs<T> = T & {
-  configs: Configs;
-};
-
-export { EventGroup, Events, Event, Configs, PropsWithConfigs };
+export { EventGroup, Events, Event, Configs };

@@ -143,12 +143,12 @@ Same index in events values array map to an event, displayed as a collection of 
 
 ### Theme
 
-| Property  | Type     | Description                                      |
-| --------- | -------- | ------------------------------------------------ |
-| `primary` | `string` | header color                                     |
-| `accent`  | `string` | highlighted weekday text color                   |
-| `surface` | `string` | background color                                 |
-| `text`    | `string` | base color for timetable ticks and weekday texts |
+| Property  | Type     | Description                                                 |
+| --------- | -------- | ----------------------------------------------------------- |
+| `primary` | `string` | (Optional) header color                                     |
+| `accent`  | `string` | (Optional) highlighted weekday text color                   |
+| `background` | `string` | (Optional) background color                                 |
+| `text`    | `string` | (Optional) base color for timetable ticks and weekday texts |
 
 
 

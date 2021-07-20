@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import updateOpacity from '../utils/updateOpacity';
-import type { Configs, Event, PropsWithConfigs } from '../types';
+import type { Configs, Event } from '../types';
 import colorMixing from '../utils/colorMixing';
+import { ConfigsContext } from './TimeTable';
 
 const TITLE_LINE_HEIGHT = 12;
 const SUBTITLE_LINE_HEIGHT = 12;
@@ -18,8 +19,8 @@ export default function EventCard({
   event,
   onPress,
   backgroundColor,
-  configs,
-}: PropsWithConfigs<EventCardProps>) {
+}: EventCardProps) {
+  const configs = useContext(ConfigsContext);
   const { styles, numOfLines } = getStyles(event, configs, backgroundColor);
 
   return (

@@ -9,7 +9,7 @@ export const TIMETABLE_CONSTANTS = Object.freeze({
 export const THEME = {
   primary: 'rgba(21,101,192,1)',
   accent: 'rgba(249, 169, 83, 1)',
-  surface: 'rgba(255,255,255,1)',
+  background: 'rgba(255,255,255,1)',
   text: 'rgba(12,12,12,1)',
 };
 

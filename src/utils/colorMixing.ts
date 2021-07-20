@@ -1,13 +1,11 @@
-import { THEME } from './constants';
-
 const rgbaToArray = (rgba: string) => {
   const arr = rgba.substr(5).split(')')[0].split(',');
   if (arr.indexOf('/') > -1) arr.splice(3, 1);
   return arr.map((x) => parseFloat(x));
 };
 
-const colorMixing = (color: string, base?: string) => {
-  const baseColor = base || THEME.surface;
+const colorMixing = (color: string, base: string) => {
+  const baseColor = base;
   const mix1 = rgbaToArray(baseColor);
   const mix2 = rgbaToArray(color);
   const mix = [];

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import type { PropsWithConfigs } from 'src/types';
 
-import { THEME, WEEKDAYS } from '../utils/constants';
+import { WEEKDAYS } from '../utils/constants';
+import { ConfigsContext, ThemeContext } from './TimeTable';
 
-export default function WeekdayText({ configs }: PropsWithConfigs<{}>) {
+export default function WeekdayText() {
+  const configs = useContext(ConfigsContext);
+  const theme = useContext(ThemeContext);
   const { cellWidth, numOfDays } = configs;
   const currentDay = new Date();
   const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
-  const styles = getStyles({ cellWidth });
+  const styles = getStyles({ cellWidth, theme });
 
   return (
     <>
@@ -33,7 +35,7 @@ export default function WeekdayText({ configs }: PropsWithConfigs<{}>) {
   );
 }
 
-const getStyles = ({ cellWidth }) =>
+const getStyles = ({ cellWidth, theme }) =>
   StyleSheet.create({
     weekdayCell: {
       width: cellWidth,
@@ -42,7 +44,7 @@ const getStyles = ({ cellWidth }) =>
       alignItems: 'center',
     },
     weekdayTextHighlight: {
-      color: THEME.accent,
+      color: theme.accent,
     },
     weekdayText: {
       fontSize: 11,

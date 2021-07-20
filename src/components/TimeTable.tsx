@@ -51,7 +51,7 @@ export default function TimeTable({
   const { cellWidth, cellHeight, numOfDays, numOfHours, timeTicksWidth } =
     configs;
 
-  const styles = getStyles({ timeTicksWidth });
+  const styles = getStyles({ timeTicksWidth, theme });
 
   const onHorizontalScroll = (e) => {
     weekdayScrollRef.current.scrollTo({
@@ -86,7 +86,7 @@ export default function TimeTable({
               horizontal
               showsHorizontalScrollIndicator={false}
             >
-              <WeekdayText configs={configs} />
+              <WeekdayText />
             </ScrollView>
           </View>
           <ScrollView
@@ -101,7 +101,7 @@ export default function TimeTable({
               }
             }}
           >
-            <TimeTableTicks configs={configs} />
+            <TimeTableTicks />
             <ScrollView
               horizontal
               onScroll={onHorizontalScroll}
@@ -120,9 +120,9 @@ export default function TimeTable({
                 height={cellWidth * numOfHours}
                 cellWidth={cellWidth}
                 cellHeight={cellHeight}
-                stroke={updateOpacity(THEME.text, 0.05)}
+                stroke={updateOpacity(theme.text, 0.05)}
               />
-              <TimeIndicator configs={configs} />
+              <TimeIndicator />
               {events.map((event, i) => (
                 <EventCard
                   key={`${event.courseId}-${i}-${event.day}`}
@@ -132,9 +132,8 @@ export default function TimeTable({
                   }}
                   onPress={eventOnPress && (() => eventOnPress(event))}
                   backgroundColor={
-                    contentContainerStyle?.backgroundColor || THEME.surface
+                    contentContainerStyle?.backgroundColor || theme.background
                   }
-                  configs={configs}
                 />
               ))}
             </ScrollView>
@@ -145,19 +144,19 @@ export default function TimeTable({
   );
 }
 
-const getStyles = ({ timeTicksWidth }) =>
+const getStyles = ({ timeTicksWidth, theme }) =>
   StyleSheet.create({
     weekdayRow: {
       flexDirection: 'row',
       height: 32,
-      backgroundColor: THEME.primary,
+      backgroundColor: theme.primary,
     },
     placeholder: {
       width: timeTicksWidth,
     },
     courseContainer: {
       flexDirection: 'row',
-      backgroundColor: THEME.surface,
+      backgroundColor: theme.background,
       width: '100%',
     },
     courseList: {
