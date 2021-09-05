@@ -87,7 +87,7 @@ You can choose to pass either `eventGroups`  or `events` to make timetable event
 | `eventGroups`          | [`EventGroup[]`](#EventGroup) | Collection of event group, events parsed from one `eventGroup` share the same `courseId`, `title` and `color`, but different `section` |
 | `events`    | [`Event[]`](#Event) | Collection of event, each `event` is a card displayed on timetable |
 | `eventOnPress` | `(event) => any` | (Optional) On press function for an event card, event object will be passed as parameter |
-| `eventColors` | `string[]`            | (Optional) Event card colors in `rgba` |
+| `eventColors` | `string[]`            | (Optional) Event card colors |
 | `configs`       | [`Configs`](#Configs) | (Optional) Configurations like `numOfDays`, `startHour`, `timeTickWidth` |
 | `headerStyle` | `ViewStyle` | (Optional) Header styles |
 | `contentContainerStyle` | `ViewStyle` | (Optional) Event cards container styles |

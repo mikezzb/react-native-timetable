@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import updateOpacity from '../utils/updateOpacity';
+import addOpacity from '../utils/addOpacity';
 import { ConfigsContext, ThemeContext } from './TimeTable';
 
 type CurrentTime = {
@@ -53,7 +53,7 @@ const getStyles = ({ currentTime, topMarginValue, cellWidth, theme }) =>
       zIndex: 3,
       position: 'absolute',
       height: 1.5,
-      backgroundColor: updateOpacity(theme.accent, 0.8),
+      backgroundColor: addOpacity(theme.accent, 0.8),
       marginLeft: (currentTime.day - 1) * cellWidth,
       marginTop: topMarginValue,
       width: cellWidth - 2,
