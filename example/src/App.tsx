@@ -126,7 +126,7 @@ const eventGroups = [
       '': {
         days: [6],
         startTimes: ['16:30'],
-        endTimes: ['19:15'],
+        endTimes: ['20:00'],
         locations: ['Home'],
       },
     },

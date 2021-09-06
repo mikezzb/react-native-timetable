@@ -1,41 +1,45 @@
-import type { EventGroup, Event } from '../types';
+import type { EventGroup, Event, Configs } from '../types';
 
 type GroupToEventsProps = {
   eventGroups: EventGroup[];
-  numOfHours: number;
   eventColors: string[];
+  configs: Configs;
 };
 
 type GroupToEventsReturns = {
   events: Event[];
-  earlistGrid?: number;
-  weekendEvent?: boolean;
+  configs: Configs;
+  earlistGrid: number;
 };
 
 const groupToEvents = ({
   eventGroups,
-  numOfHours,
   eventColors,
+  configs,
 }: GroupToEventsProps): GroupToEventsReturns => {
   const events: Event[] = [];
   let colorIndex = 0;
-  let earlistGrid = numOfHours; // Auto vertical scroll to earlistGrid
-  let weekendEvent = false;
-  const currentDay = new Date();
-  const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
-  const isWeekend = currentWeekday > 5;
+  let earlistGrid = configs.numOfHours;
   try {
     eventGroups.forEach((event, groupIndex) => {
       Object.entries(event.sections).forEach(([k, v]) => {
         (v.days || []).forEach((day, i) => {
-          const sTime = v.startTimes[i].split(':');
-          const timeGrid =
-            parseInt(sTime[0], 10) + parseInt(sTime[1], 10) / 60 - 8;
+          const [sHour, sMinute] = v.startTimes[i].split(':');
+          const [eHour, eMinute] = v.endTimes[i].split(':');
+          const sTime = +sHour + +sMinute / 60;
+          const eTime = +eHour + +eMinute / 60;
+          const timeGrid = sTime - 8;
           if (timeGrid < earlistGrid) {
             earlistGrid = timeGrid;
           }
-          if (isWeekend && day > 5) {
-            weekendEvent = true;
+          if (sTime - 1 < configs.startHour) {
+            configs.startHour = sTime - 1;
+          }
+          if (eTime + 1 > configs.endHour) {
+            configs.endHour = eTime + 1;
+          }
+          if (day > configs.numOfDays) {
+            configs.numOfDays = day;
           }
           events.push({
             courseId: event.courseId,
@@ -54,13 +58,15 @@ const groupToEvents = ({
     });
     return {
       events,
+      configs,
       earlistGrid,
-      weekendEvent,
     };
   } catch (error) {
     console.warn('Invalid TimeTable');
     return {
       events: [],
+      configs,
+      earlistGrid,
     };
   }
 };

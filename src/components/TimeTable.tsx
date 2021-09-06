@@ -41,17 +41,12 @@ export default function TimeTable({
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
 
-  const configs = getConfigs(propConfigs);
-
   const theme = {
     ...THEME,
     ...propTheme,
   };
 
-  const { cellWidth, cellHeight, numOfDays, numOfHours, timeTicksWidth } =
-    configs;
-
-  const styles = getStyles({ timeTicksWidth, theme });
+  let configs = getConfigs(propConfigs);
 
   const onHorizontalScroll = (e) => {
     weekdayScrollRef.current.scrollTo({
@@ -59,20 +54,29 @@ export default function TimeTable({
     });
   };
 
-  let earlistGrid = numOfHours; // Auto vertical scroll to earlistGrid
-  let weekendEvent = false; // Auto horizontal scroll if isWeekend and has weekendEvent
+  const currentDay = new Date();
+  const currentWeekday = currentDay.getDay() ? currentDay.getDay() : 7;
+  let weekendEvent = currentWeekday > 5; // Auto horizontal scroll if isWeekend and has weekendEvent
+  let earlistGrid = configs.numOfHours; // Auto vertical scroll to earlistGrid
 
   // Parse eventGroups to events
   if (eventGroups) {
     const parsed = getEventsFromGroup({
       eventGroups,
-      numOfHours,
       eventColors,
+      configs,
     });
     events = parsed.events;
+    configs = parsed.configs;
+    configs.numOfHours = configs.endHour - configs.startHour + 1;
     earlistGrid = parsed.earlistGrid || earlistGrid;
-    weekendEvent = parsed.weekendEvent;
+    weekendEvent = weekendEvent && parsed.configs.numOfDays > 5;
   }
+
+  const { cellWidth, cellHeight, timeTicksWidth, numOfDays, numOfHours } =
+    configs;
+
+  const styles = getStyles({ timeTicksWidth, theme });
 
   return (
     <ConfigsContext.Provider value={configs}>
