@@ -1,5 +1,5 @@
 const rgbaToArray = (rgba: string) => {
-  const arr = rgba.substr(5).split(')')[0].split(',');
+  const arr = rgba.substring(5).split(')')[0].split(',');
   if (arr.indexOf('/') > -1) arr.splice(3, 1);
   return arr.map((x) => parseFloat(x));
 };
@@ -19,7 +19,7 @@ const colorMixing = (color: string, base: string) => {
   mix[2] = Math.round(
     (mix2[2] * mix2[3]) / mix[3] + (mix1[2] * mix1[3] * (1 - mix2[3])) / mix[3]
   ); // blue
-  return `rgba(${mix})`;
+  return `rgba(${mix.join(',')})`;
 };
 
 export default colorMixing;
