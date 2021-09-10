@@ -4,7 +4,6 @@ import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 import EventCard from './EventCard';
 import TimeIndicator from './TimeIndicator';
 import { EVENT_COLORS, THEME } from '../utils/constants';
-import addOpacity from '../utils/addOpacity';
 import TimeTableTicks from './TimeTableTicks';
 import WeekdayText from './WeekdayText';
 import type { Configs, EventGroup, Event } from '../types';
@@ -73,8 +72,7 @@ export default function TimeTable({
     weekendEvent = weekendEvent && parsed.configs.numOfDays > 5;
   }
 
-  const { cellWidth, cellHeight, timeTicksWidth, numOfDays, numOfHours } =
-    configs;
+  const { cellWidth, cellHeight, timeTicksWidth, numOfHours } = configs;
 
   const styles = getStyles({ timeTicksWidth, theme });
 
@@ -119,13 +117,7 @@ export default function TimeTable({
                   });
               }}
             >
-              <TimeTableGrid
-                numOfDays={numOfDays}
-                numOfHours={numOfHours}
-                cellWidth={cellWidth}
-                cellHeight={cellHeight}
-                stroke={addOpacity(theme.text, 0.05)}
-              />
+              <TimeTableGrid />
               <TimeIndicator />
               {events.map((event, i) => (
                 <EventCard
