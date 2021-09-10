@@ -16,7 +16,7 @@ const TimeTableTicks = () => {
         <View style={styles.timeLineBox} key={`timeline-${hour}`}>
           {hour !== startHour && (
             <Text style={styles.timeLineText}>{`${
-              hour > 9 ? '' + hour : '0' + hour
+              hour > 9 ? '' + hour.toFixed(0) : '0' + hour.toFixed(0)
             }:00`}</Text>
           )}
         </View>
