@@ -120,8 +120,8 @@ export default function TimeTable({
               }}
             >
               <TimeTableGrid
-                width={cellWidth * numOfDays}
-                height={cellWidth * numOfHours}
+                numOfDays={numOfDays}
+                numOfHours={numOfHours}
                 cellWidth={cellWidth}
                 cellHeight={cellHeight}
                 stroke={addOpacity(theme.text, 0.05)}
