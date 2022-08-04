@@ -1,4 +1,4 @@
-import React, { createContext, useRef } from 'react';
+import React, { createContext, FC, useRef } from 'react';
 import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 
 import EventCard from './EventCard';
@@ -19,6 +19,7 @@ type TimeTableProps = {
   configs?: Partial<Configs>;
   headerStyle?: ViewStyle;
   disableHeader?: boolean;
+  disableTicker?: boolean;
   contentContainerStyle?: ViewStyle;
   theme?: Partial<typeof THEME>;
 };
@@ -27,17 +28,18 @@ export const ThemeContext = createContext<typeof THEME>(null);
 
 export const ConfigsContext = createContext<Configs>(null);
 
-export default function TimeTable({
+const TimeTable: FC<TimeTableProps> = ({
   events,
   eventGroups,
   eventOnPress,
   headerStyle,
   disableHeader,
+  disableTicker,
   contentContainerStyle,
   eventColors = EVENT_COLORS,
   configs: propConfigs,
   theme: propTheme,
-}: TimeTableProps) {
+}) => {
   const weekdayScrollRef = useRef<null | ScrollView>(null);
   const courseHorizontalScrollRef = useRef<null | ScrollView>(null);
   const courseVerticalScrollRef = useRef<null | ScrollView>(null);
@@ -83,8 +85,7 @@ export default function TimeTable({
     <ConfigsContext.Provider value={configs}>
       <ThemeContext.Provider value={theme}>
         <View style={contentContainerStyle}>
-          {
-            !disableHeader &&
+          {!disableHeader && (
             <View style={[styles.weekdayRow, headerStyle]}>
               <View style={styles.placeholder} />
               <ScrollView
@@ -96,7 +97,7 @@ export default function TimeTable({
                 <WeekdayText />
               </ScrollView>
             </View>
-          }
+          )}
           <ScrollView
             ref={courseVerticalScrollRef}
             contentContainerStyle={styles.courseContainer}
@@ -124,7 +125,7 @@ export default function TimeTable({
               }}
             >
               <TimeTableGrid />
-              <TimeIndicator />
+              {!disableTicker && <TimeIndicator />}
               {events.map((event, i) => (
                 <EventCard
                   key={`${event.courseId}-${i}-${event.day}`}
@@ -165,3 +166,5 @@ const getStyles = ({ timeTicksWidth, theme }) =>
       flexDirection: 'column',
     },
   });
+
+export default TimeTable;

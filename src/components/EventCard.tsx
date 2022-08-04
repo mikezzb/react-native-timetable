@@ -26,15 +26,10 @@ export default function EventCard({
       style={[styles.courseCard, styles.innerCard]}
       onPress={onPress}
     >
-      <Text
-        style={styles.courseCardTitle}
-        ellipsizeMode="clip"
-      >
+      <Text style={styles.courseCardTitle} ellipsizeMode="clip">
         {`${event.courseId}${event.section ? ` ${event.section}` : ''}`}
       </Text>
-      <Text style={styles.courseCardLocation}>
-        {event.location}
-      </Text>
+      <Text style={styles.courseCardLocation}>{event.location}</Text>
     </TouchableOpacity>
   );
 }

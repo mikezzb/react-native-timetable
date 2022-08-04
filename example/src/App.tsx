@@ -133,15 +133,6 @@ const eventGroups = [
   },
 ];
 
-const events = [
-  {
-    courseId: 'നൂൽപുട്ട്, വെള്ളക്കടല',
-    day: 6,
-    startTime: '19:00',
-    endTime: '20:30'
-  },
-]
-
 export default function App() {
   return (
     <SafeAreaProvider>
@@ -152,6 +143,7 @@ export default function App() {
             eventGroups={eventGroups}
             // events={events}
             // disableHeader
+            // disableTicker
             eventOnPress={(event) => {
               Alert.alert(`${JSON.stringify(event)}`);
               console.log(eventGroups[event.groupIndex]); // only for eventGroups
