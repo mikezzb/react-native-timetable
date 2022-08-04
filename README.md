@@ -90,6 +90,7 @@ You can choose to pass either `eventGroups`  or `events` to make timetable event
 | `eventColors` | `string[]`            | (Optional) Event card colors |
 | `configs`       | [`Configs`](#Configs) | (Optional) Configurations like `numOfDays`, `startHour`, `timeTickWidth` |
 | `headerStyle` | `ViewStyle` | (Optional) Header styles |
+| `disableHeader` | `boolean` | (Optional) To disable weekdays header |
 | `contentContainerStyle` | `ViewStyle` | (Optional) Event cards container styles |
 | `theme` | `Theme` | (Optional) Overall theme for timetable, such as header , background, and text colors |
 

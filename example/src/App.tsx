@@ -151,6 +151,7 @@ export default function App() {
           <TimeTable
             eventGroups={eventGroups}
             // events={events}
+            // disableHeader
             eventOnPress={(event) => {
               Alert.alert(`${JSON.stringify(event)}`);
               console.log(eventGroups[event.groupIndex]); // only for eventGroups

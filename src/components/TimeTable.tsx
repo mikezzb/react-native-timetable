@@ -18,6 +18,7 @@ type TimeTableProps = {
   eventColors?: string[];
   configs?: Partial<Configs>;
   headerStyle?: ViewStyle;
+  disableHeader?: boolean;
   contentContainerStyle?: ViewStyle;
   theme?: Partial<typeof THEME>;
 };
@@ -31,6 +32,7 @@ export default function TimeTable({
   eventGroups,
   eventOnPress,
   headerStyle,
+  disableHeader,
   contentContainerStyle,
   eventColors = EVENT_COLORS,
   configs: propConfigs,
@@ -48,6 +50,7 @@ export default function TimeTable({
   let configs = getConfigs(propConfigs);
 
   const onHorizontalScroll = (e) => {
+    if (disableHeader) return;
     weekdayScrollRef.current.scrollTo({
       x: e.nativeEvent.contentOffset.x,
     });
@@ -80,17 +83,20 @@ export default function TimeTable({
     <ConfigsContext.Provider value={configs}>
       <ThemeContext.Provider value={theme}>
         <View style={contentContainerStyle}>
-          <View style={[styles.weekdayRow, headerStyle]}>
-            <View style={styles.placeholder} />
-            <ScrollView
-              scrollEnabled={false}
-              ref={weekdayScrollRef}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            >
-              <WeekdayText />
-            </ScrollView>
-          </View>
+          {
+            !disableHeader &&
+            <View style={[styles.weekdayRow, headerStyle]}>
+              <View style={styles.placeholder} />
+              <ScrollView
+                scrollEnabled={false}
+                ref={weekdayScrollRef}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              >
+                <WeekdayText />
+              </ScrollView>
+            </View>
+          }
           <ScrollView
             ref={courseVerticalScrollRef}
             contentContainerStyle={styles.courseContainer}
