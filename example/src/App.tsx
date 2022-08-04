@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Alert, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import TimeTable from '@mikezzb/react-native-timetable';
