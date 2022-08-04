@@ -6,9 +6,6 @@ import type { Configs, Event } from '../types';
 import colorMixing from '../utils/colorMixing';
 import { ConfigsContext } from './TimeTable';
 
-const TITLE_LINE_HEIGHT = 12;
-const SUBTITLE_LINE_HEIGHT = 12;
-
 type EventCardProps = {
   event: Event;
   backgroundColor: string;
@@ -21,7 +18,7 @@ export default function EventCard({
   backgroundColor,
 }: EventCardProps) {
   const configs = useContext(ConfigsContext);
-  const { styles, numOfLines } = getStyles(event, configs, backgroundColor);
+  const styles = getStyles(event, configs, backgroundColor);
 
   return (
     <TouchableOpacity
@@ -31,16 +28,13 @@ export default function EventCard({
     >
       <Text
         style={styles.courseCardTitle}
-        numberOfLines={2}
         ellipsizeMode="clip"
       >
         {`${event.courseId}${event.section ? ` ${event.section}` : ''}`}
       </Text>
-      {Boolean(numOfLines) && (
-        <Text style={styles.courseCardLocation} numberOfLines={numOfLines}>
-          {event.location}
-        </Text>
-      )}
+      <Text style={styles.courseCardLocation}>
+        {event.location}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -54,9 +48,6 @@ const getStyles = (event: Event, configs: Configs, backgroundColor: string) => {
   const durationHeight =
     cellHeight * (eTime[0] - sTime[0] + (eTime[1] - sTime[1]) / 60.0);
   const textColor = addOpacity(event.color, 0.8);
-  const numOfLines = Math.floor(
-    (durationHeight - 2 * TITLE_LINE_HEIGHT - 10) / SUBTITLE_LINE_HEIGHT
-  );
   const bgColor = colorMixing(addOpacity(event.color, 0.15), backgroundColor);
   const styles = StyleSheet.create({
     courseCard: {
@@ -77,7 +68,7 @@ const getStyles = (event: Event, configs: Configs, backgroundColor: string) => {
     },
     courseCardTitle: {
       fontSize: 10,
-      lineHeight: TITLE_LINE_HEIGHT,
+      lineHeight: 11,
       fontWeight: 'bold',
       color: textColor,
     },
@@ -87,5 +78,5 @@ const getStyles = (event: Event, configs: Configs, backgroundColor: string) => {
       color: textColor,
     },
   });
-  return { styles, numOfLines };
+  return styles;
 };

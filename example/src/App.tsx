@@ -133,6 +133,15 @@ const eventGroups = [
   },
 ];
 
+const events = [
+  {
+    courseId: 'നൂൽപുട്ട്, വെള്ളക്കടല',
+    day: 6,
+    startTime: '19:00',
+    endTime: '20:30'
+  },
+]
+
 export default function App() {
   return (
     <SafeAreaProvider>
