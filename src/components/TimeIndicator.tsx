@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import addOpacity from '../utils/addOpacity';
@@ -11,7 +11,7 @@ type CurrentTime = {
 };
 
 // display an indicator line according to current time and weekday
-const TimeIndicator = () => {
+const TimeIndicator: FC = () => {
   const configs = useContext(ConfigsContext);
   const theme = useContext(ThemeContext);
   const { cellWidth, cellHeight, startHour, endHour } = configs;

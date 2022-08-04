@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import { WEEKDAYS } from '../utils/constants';
 import { ConfigsContext, ThemeContext } from './TimeTable';
 
-export default function WeekdayText() {
+const WeekdayText: FC = () => {
   const configs = useContext(ConfigsContext);
   const theme = useContext(ThemeContext);
   const { cellWidth, numOfDays } = configs;
@@ -33,7 +33,7 @@ export default function WeekdayText() {
       })}
     </>
   );
-}
+};
 
 const getStyles = ({ cellWidth, theme }) =>
   StyleSheet.create({
@@ -51,3 +51,5 @@ const getStyles = ({ cellWidth, theme }) =>
       color: 'white',
     },
   });
+
+export default WeekdayText;

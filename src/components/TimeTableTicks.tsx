@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { Configs } from '../types';
 import { ConfigsContext } from './TimeTable';
 
-const TimeTableTicks = () => {
+const TimeTableTicks: FC = () => {
   const configs = useContext(ConfigsContext);
   const { startHour, endHour } = configs;
   const styles = getStyles(configs);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import addOpacity from '../utils/addOpacity';
@@ -12,11 +12,7 @@ type EventCardProps = {
   onPress?: (...args: any[]) => any;
 };
 
-export default function EventCard({
-  event,
-  onPress,
-  backgroundColor,
-}: EventCardProps) {
+const EventCard: FC<EventCardProps> = ({ event, onPress, backgroundColor }) => {
   const configs = useContext(ConfigsContext);
   const styles = getStyles(event, configs, backgroundColor);
 
@@ -32,7 +28,7 @@ export default function EventCard({
       <Text style={styles.courseCardLocation}>{event.location}</Text>
     </TouchableOpacity>
   );
-}
+};
 
 const getStyles = (event: Event, configs: Configs, backgroundColor: string) => {
   const { cellWidth, cellHeight, startHour } = configs;
@@ -75,3 +71,5 @@ const getStyles = (event: Event, configs: Configs, backgroundColor: string) => {
   });
   return styles;
 };
+
+export default EventCard;

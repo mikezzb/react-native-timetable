@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import addOpacity from '../utils/addOpacity';
 import { ConfigsContext, ThemeContext } from './TimeTable';
 
-const TimeTableGridStroke = ({
+const TimeTableGridStroke: FC<any> = ({
   cellWidth,
   cellHeight,
   stroke,
@@ -21,7 +21,7 @@ const TimeTableGridStroke = ({
   />
 );
 
-const TimeTableGrid = () => {
+const TimeTableGrid: FC = () => {
   const { text } = useContext(ThemeContext);
   const { cellHeight, cellWidth, numOfDays, numOfHours } =
     useContext(ConfigsContext);

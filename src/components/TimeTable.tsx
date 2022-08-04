@@ -145,7 +145,7 @@ const TimeTable: FC<TimeTableProps> = ({
       </ThemeContext.Provider>
     </ConfigsContext.Provider>
   );
-}
+};
 
 const getStyles = ({ timeTicksWidth, theme }) =>
   StyleSheet.create({
