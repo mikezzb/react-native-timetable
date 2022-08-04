@@ -4,12 +4,13 @@
     "paths": {
       "react-native-timetable": ["./src/index"]
     },
+    "outDir": "./lib",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
+    "jsx": "react-native",
     "lib": ["esnext"],
     "module": "esnext",
     "moduleResolution": "node",
@@ -23,7 +24,8 @@
     "skipLibCheck": true,
     "strict": false,
     "noImplicitAny": false,
-    "target": "esnext",
+    "target": "es6",
     "declaration": true
-  }
+  },
+  "exclude": ["example", "src/__tests__", "lib"]
 }
