@@ -55,6 +55,7 @@ const TimeTable: FC<TimeTableProps> = ({
     if (disableHeader) return;
     weekdayScrollRef.current.scrollTo({
       x: e.nativeEvent.contentOffset.x,
+      animated: false,
     });
   };
 
@@ -114,6 +115,7 @@ const TimeTable: FC<TimeTableProps> = ({
             <ScrollView
               horizontal
               onScroll={onHorizontalScroll}
+              scrollEventThrottle={16}
               ref={courseHorizontalScrollRef}
               contentContainerStyle={styles.courseList}
               showsHorizontalScrollIndicator={false}
