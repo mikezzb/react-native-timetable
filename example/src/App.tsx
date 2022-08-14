@@ -143,6 +143,10 @@ export default function App() {
             // events={events}
             // disableHeader
             // disableTicker
+            // configs={{
+            //   numOfDays: 6,
+            //   numOfDaysPerPage: 6,
+            // }}
             eventOnPress={(event) => {
               Alert.alert(`${JSON.stringify(event)}`);
               console.log(eventGroups[event.groupIndex]); // only for eventGroups

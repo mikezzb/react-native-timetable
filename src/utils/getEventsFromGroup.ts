@@ -20,6 +20,7 @@ const groupToEvents = ({
   const events: Event[] = [];
   let colorIndex = 0;
   let earlistGrid = configs.numOfHours;
+  const daysOccur = new Set<number>();
   try {
     eventGroups.forEach((event, groupIndex) => {
       Object.entries(event.sections).forEach(([k, v]) => {
@@ -38,8 +39,8 @@ const groupToEvents = ({
           if (eTime + 1 > configs.endHour) {
             configs.endHour = eTime + 1;
           }
-          if (day > configs.numOfDays) {
-            configs.numOfDays = day;
+          if (!daysOccur.has(day)) {
+            daysOccur.add(day);
           }
           events.push({
             courseId: event.courseId,
@@ -56,6 +57,7 @@ const groupToEvents = ({
       });
       colorIndex++;
     });
+    configs.numOfDays = Math.max(daysOccur.size, configs.numOfDays);
     return {
       events,
       configs,
