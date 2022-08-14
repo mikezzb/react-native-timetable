@@ -1,6 +1,6 @@
 {
   "name": "@mikezzb/react-native-timetable",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "React Native TimeTable Component",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
