@@ -27,6 +27,12 @@ const groupToEvents = ({
         (v.days || []).forEach((day, i) => {
           const [sHour, sMinute] = v.startTimes[i].split(':');
           const [eHour, eMinute] = v.endTimes[i].split(':');
+          if (
+            Number.isNaN(sHour) ||
+            Number.isNaN(eHour) ||
+            Number.isNaN(typeof day === "string" ? parseInt(day, 10) : day)
+          )
+            return;
           const sTime = +sHour + +sMinute / 60;
           const eTime = +eHour + +eMinute / 60;
           const timeGrid = sTime - 8;

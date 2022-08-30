@@ -130,6 +130,18 @@ const eventGroups = [
       },
     },
   },
+  {
+    courseId: 'Invalid!',
+    title: '',
+    sections: {
+      '': {
+        days: ['TBA'],
+        startTimes: ['TBA'],
+        endTimes: ['TBA'],
+        locations: ['TBA'],
+      },
+    },
+  },
 ];
 
 export default function App() {
