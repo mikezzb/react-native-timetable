@@ -23,10 +23,10 @@ const WeekdayText: FC = () => {
             <Text
               style={[
                 styles.weekdayText,
-                currentWeekday === day && styles.weekdayTextHighlight,
+                // currentWeekday === day && styles.weekdayTextHighlight,
               ]}
             >
-              {`${WEEKDAYS[day - 1]} ${thatDay.getDate()}`}
+              {`${WEEKDAYS[day - 1]}`}
             </Text>
           </View>
         );
